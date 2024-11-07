@@ -1,6 +1,7 @@
 package com.nicoly.webServices.services;
 import com.nicoly.webServices.entities.User;
 import com.nicoly.webServices.repositories.UserRepository;
+import com.nicoly.webServices.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,7 @@ public class UserService {
     }
     public User findById(Long id) {
         Optional<User> obj = repository.findById(id);
-        return obj.get();
+        return obj.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
     public User insert(User obj) {
