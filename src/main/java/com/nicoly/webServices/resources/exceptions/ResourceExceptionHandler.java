@@ -1,5 +1,6 @@
 package com.nicoly.webServices.resources.exceptions;
 
+import com.nicoly.webServices.services.exceptions.DatabaseException;
 import com.nicoly.webServices.services.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -19,5 +20,14 @@ public class ResourceExceptionHandler {
         StanderdError err = new StanderdError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }
+
+    @ExceptionHandler(DatabaseException.class)
+    public ResponseEntity<StanderdError> database(DatabaseException e, HttpServletRequest request) {
+        String error = "Database error";
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        StanderdError err = new StanderdError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(status).body(err);
+    }
+
 
 }
